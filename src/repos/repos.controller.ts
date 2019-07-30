@@ -24,8 +24,8 @@ export class ReposController {
     return this.reposService.setPath(newPath);
   }
 
-  @Post('run')
-  async run(@Body('repos') repos: string[],@Body('operate') operate: string) {
-    return this.reposService.run(repos,operate)
-  }
+  // @Post('run')
+  // async run(@Body('repos') repos: string[],@Body('operate') operate: string) {
+  //   return this.reposService.run(repos,operate)
+  // }
 }

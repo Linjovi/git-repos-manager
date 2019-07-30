@@ -66,13 +66,13 @@ export class ReposService {
     return fs.writeFileSync(repoPath, JSON.stringify(repo));
   }
 
-  async run(repos:string[],operate:String){
-    let repo = this.getRepo()
-    repo.projects = repos.map(item =>{
-      return {path:path.join(repo.path,item)}
-    })
-    fs.writeFileSync(repoPath, JSON.stringify(repo));
-    let string = await shell.exec(`mrgx ${operate}`).stdout
-    // return string
-  }
+  // async run(repos:string[],operate:String){
+  //   let repo = this.getRepo()
+  //   repo.projects = repos.map(item =>{
+  //     return {path:path.join(repo.path,item)}
+  //   })
+  //   fs.writeFileSync(repoPath, JSON.stringify(repo));
+  //   return shell.exec(`mrgx ${operate}`).stdout
+  //   // return string
+  // }
 }
