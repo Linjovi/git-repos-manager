@@ -24,11 +24,23 @@ export class SocketGateway {
     });
     fs.writeFileSync(repoPath, JSON.stringify(repo));
 
-    var child = shell.exec(`mrgx ${data.opera}`, { async: true })
+    let command = ""
+    if(data.opera.includes("checkout") || data.opera.includes("clone")){
+      command = `mrgx -q ${data.opera} -q`
+    }else{
+      command = `mrgx -q ${data.opera}`
+    }
+    var child = shell.exec(command, { async: true });
     child.stdout.on('data', data => {
-      this.server.emit('events', data);
+      this.server.emit('out', data);
     });
-    
+    child.stderr.on('data', data => {
+      this.server.emit('err', data);
+    });
+    child.on('close', code => {
+      this.server.emit('close', code);
+    });
+
     return `mrgx ${data.opera}`;
   }
 
