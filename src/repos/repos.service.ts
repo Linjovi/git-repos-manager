@@ -3,16 +3,15 @@ import * as ini from 'ini';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
-import * as shell from "shelljs";
+import {Repo} from "./interface/repo"
 
 var currentPath = process.cwd(); //当前目录
 let repoPath = path.join(currentPath, '.mrgx.config.json');
 @Injectable()
 export class ReposService {
-  // private readonly repos: any[] = [];
 
-  findAll(rootPath: string): any[] {
-    var repos = [];
+  findAll(rootPath: string): Repo[] {
+    var repos:Repo[] = [];
     rootPath = rootPath || '/';
     try {
       let dirList = fs.readdirSync(rootPath);
@@ -66,13 +65,4 @@ export class ReposService {
     return fs.writeFileSync(repoPath, JSON.stringify(repo));
   }
 
-  // async run(repos:string[],operate:String){
-  //   let repo = this.getRepo()
-  //   repo.projects = repos.map(item =>{
-  //     return {path:path.join(repo.path,item)}
-  //   })
-  //   fs.writeFileSync(repoPath, JSON.stringify(repo));
-  //   return shell.exec(`mrgx ${operate}`).stdout
-  //   // return string
-  // }
 }

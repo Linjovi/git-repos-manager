@@ -7,6 +7,7 @@ import { Client, Server } from 'socket.io';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as shell from 'shelljs';
+import {Operator} from "./dto/operator.dto"
 
 var currentPath = process.cwd(); //当前目录
 let repoPath = path.join(currentPath, '.mrgx.config.json');
@@ -14,12 +15,12 @@ let repoPath = path.join(currentPath, '.mrgx.config.json');
 @WebSocketGateway(4000)
 export class SocketGateway {
   @WebSocketServer()
-  server: Server;
+  server!: Server;
 
   @SubscribeMessage('operator')
-  async operator(client: Client, data: any): Promise<any> {
+  async operator(client: Client, data: Operator): Promise<any> {
     let repo = this.getRepo();
-    repo.projects = data.repos.map(item => {
+    repo.projects = data.repos.map((item:string) => {
       return { path: path.join(repo.path, item) };
     });
     fs.writeFileSync(repoPath, JSON.stringify(repo));
@@ -31,10 +32,10 @@ export class SocketGateway {
       command = `mrgx -q ${data.opera}`
     }
     var child = shell.exec(command, { async: true });
-    child.stdout.on('data', data => {
+    (child.stdout as any).on('data', (data:string) => {
       this.server.emit('out', data);
     });
-    child.stderr.on('data', data => {
+    (child.stderr as any).on('data', (data:string) => {
       this.server.emit('err', data);
     });
     child.on('close', code => {

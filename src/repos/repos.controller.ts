@@ -1,11 +1,12 @@
 import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { ReposService } from './repos.service';
+import {ReposDto} from "./dto/repos.dto"
 @Controller('repos')
 export class ReposController {
   constructor(private readonly reposService: ReposService) {}
 
   @Get()
-  findAll(@Query() query: any) {
+  findAll(@Query() query: ReposDto) {
     return this.reposService.findAll(query.path);
   }
 
