@@ -3,7 +3,10 @@
     [
       "@babel/preset-env",
       {
-        "useBuiltIns": "usage"
+        "useBuiltIns": "usage",
+        "targets": {
+          "node": "8.11"
+        }
       }
     ],
     "@babel/typescript"

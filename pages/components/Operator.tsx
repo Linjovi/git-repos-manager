@@ -96,7 +96,6 @@ export function Operator() {
       return item;
     });
     dispatch(actionCreators.getRepos(newList));
-    console.log("run")
     socket.emit("operator", { repos, opera }, (response: any) =>
       console.log("Operator:", response)
     );

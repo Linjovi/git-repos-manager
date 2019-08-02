@@ -10,4 +10,4 @@ import { RenderModule } from 'nest-next';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule{}

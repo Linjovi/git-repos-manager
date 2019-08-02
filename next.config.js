@@ -5,19 +5,18 @@ const path = require('path');
 
 module.exports = withPlugins([withTypescript,withCSS],{
   useFileSystemPublicRoutes: false,
-  webpack: function (config, { buildId, dev }) {
-    const originalEntry = config.entry;
+  // webpack: function (config, { buildId, dev }) {
 
-    config.resolve = {
-      ...config.resolve,
-      ...{
-        alias: {
-          ...config.resolve.alias,
-          '@src': path.resolve(__dirname, 'client'),
-        }
-      },
-    };
+  //   config.resolve = {
+  //     ...config.resolve,
+  //     ...{
+  //       alias: {
+  //         ...config.resolve.alias,
+  //         '@': path.resolve(__dirname, 'client'),
+  //       }
+  //     },
+  //   };
 
-    return config
-  }
+  //   return config
+  // }
 });
