@@ -15,7 +15,7 @@ const App: React.FC = () => {
   const [path,setPath] = React.useState("")
   const [selected,setSelected] = React.useState([])
   React.useEffect(() => {
-    Repo.getGitInfo().then(res => {
+    Repo.getGitInfo().then((res:any) => {
       setGit(res.data);
     });
   }, []);
