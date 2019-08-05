@@ -1,38 +1,39 @@
-import React from "react";
-import SelectContext from "@/components/selectContext";
-import io from "socket.io-client";
-import * as path from "path";
-import { Input, Modal, Button } from "antd";
-import "./Operator.css";
-import * as actionCreators from "@/store/actions";
-import { useSelector, useDispatch } from "react-redux";
+import React from 'react';
+import SelectContext from '@/components/selectContext';
+import io from 'socket.io-client';
+import * as path from 'path';
+import { Input, Modal, Button } from 'antd';
+import './Operator.css';
+import * as actionCreators from '@/store/actions';
+import { useSelector, useDispatch } from 'react-redux';
+import { ShellLog } from './ShellLog';
 
 const { Search } = Input;
-const socket = io("http://localhost:4000");
+const socket = io('http://localhost:4000');
 
 export function Operator() {
   const list = React.useContext(SelectContext);
-  const [result, setResult] = React.useState([{ type: "", data: "" }]);
-  const [current, setCurrent] = React.useState("");
+  const [result, setResult] = React.useState([{ type: '', data: '' }]);
+  const [current, setCurrent] = React.useState('');
   const [step, setStep] = React.useState(0);
   const _repos = useSelector((state: any) => state._repos);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    socket.on("connect", function() {
-      console.log("connected");
+    socket.on('connect', function() {
+      console.log('connected');
     });
-    socket.on("out", (data: any) => {
-      setResult(prevResult => prevResult.concat({ type: "out", data }));
+    socket.on('out', (data: any) => {
+      setResult(prevResult => prevResult.concat({ type: 'out', data }));
     });
-    socket.on("err", (data: any) => {
-      setResult(prevResult => prevResult.concat({ type: "error", data }));
+    socket.on('err', (data: any) => {
+      setResult(prevResult => prevResult.concat({ type: 'error', data }));
     });
-    socket.on("close", (data: any) => {
-      setResult(prevResult => prevResult.concat({ type: "close", data: "" }));
+    socket.on('close', (data: any) => {
+      setResult(prevResult => prevResult.concat({ type: 'close', data: '' }));
     });
-    socket.on("disconnect", function() {
-      console.log("Disconnected");
+    socket.on('disconnect', function() {
+      console.log('Disconnected');
     });
   }, []);
 
@@ -41,44 +42,44 @@ export function Operator() {
     if (!data) {
       return;
     }
-    data.data = data.data.replace(/\n/g, "");
+    // data.data = data.data.replace(/\n/g, '');
     const begin = /^\/(.*):$/;
     const end = /^\/(.*)\s✓/;
-    if (data.type === "error") {
+    if (data.type === 'error') {
       return;
     } else {
       switch (step) {
         case 0:
-          setCurrent(path.basename(data.data.split(":")[0]));
+          setCurrent(path.basename(data.data.split(':')[0]));
           setStep(1);
           return;
         case 1:
-          if (data.type === "close") {
+          if (data.type === 'close') {
             dispatch(
-              actionCreators.getStatus({ name: current, status: "fail" })
+              actionCreators.getStatus({ name: current, status: 'fail' }),
             );
-            setCurrent("");
+            setCurrent('');
             setStep(0);
             return;
           }
           if (end.test(data.data)) {
             //success
             dispatch(
-              actionCreators.getStatus({ name: current, status: "success" })
+              actionCreators.getStatus({ name: current, status: 'success' }),
             );
             if (begin.test(data.data)) {
-              setCurrent(path.basename(data.data.split("✓")[1].split(":")[0]));
+              setCurrent(path.basename(data.data.split('✓')[1].split(':')[0]).replace("\n",""));
             } else {
-              setCurrent("");
+              setCurrent('');
               setStep(0);
             }
           } else {
             //info or error
             if (begin.test(data.data)) {
               dispatch(
-                actionCreators.getStatus({ name: current, status: "fail" })
+                actionCreators.getStatus({ name: current, status: 'fail' }),
               );
-              setCurrent(path.basename(data.data.split(":")[0]));
+              setCurrent(path.basename(data.data.split(':')[0]));
             }
           }
           return;
@@ -96,8 +97,8 @@ export function Operator() {
       return item;
     });
     dispatch(actionCreators.getRepos(newList));
-    socket.emit("operator", { repos, opera }, (response: any) =>
-      console.log("Operator:", response)
+    socket.emit('operator', { repos, opera }, (response: any) =>
+      console.log('Operator:', response),
     );
   };
 
@@ -128,11 +129,7 @@ export function Operator() {
         onCancel={handleCancel}
         className="operator-model"
       >
-        {result.map((item, index) => (
-          <p key={index} className={item.type === "error" ? "error" : ""}>
-            {item.data}
-          </p>
-        ))}
+        <ShellLog result={result} />
       </Modal>
     </div>
   );

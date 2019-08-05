@@ -1,4 +1,6 @@
 ## git-repos-manager[![npm](https://img.shields.io/npm/v/yoso.svg?maxAge=2592000)](https://www.npmjs.com/package/git-repos-manager)
+[中文文档](./README_zh.md)
+
 This is a tool that allows you to manage multiple git rspositories at once.
 
 ## Install
