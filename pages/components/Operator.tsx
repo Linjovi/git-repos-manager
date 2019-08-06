@@ -94,6 +94,10 @@ export function Operator() {
       message.warning('No repos are selected');
       return;
     }
+    if(!opera.includes('git')){
+      message.warning('Only git command can be used');
+      return;
+    }
     setResult([]);
     setStep(0);
     let newList = _repos.map((item: any) => {
@@ -101,7 +105,7 @@ export function Operator() {
       return item;
     });
     dispatch(actionCreators.getRepos(newList));
-    socket.emit('operator', { repos, opera:`git ${opera}` }, (response: any) =>
+    socket.emit('operator', { repos, opera }, (response: any) =>
       console.log('Operator:', response),
     );
   };
@@ -120,7 +124,6 @@ export function Operator() {
 
   return (
     <div>
-      git 
       <Search
         enterButton="运行"
         onSearch={value => run(list, value)}
