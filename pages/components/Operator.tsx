@@ -2,7 +2,7 @@ import React from 'react';
 import SelectContext from '@/components/selectContext';
 import io from 'socket.io-client';
 import * as path from 'path';
-import { Input, Modal, Button } from 'antd';
+import { Input, Modal, Button,message } from 'antd';
 import './Operator.css';
 import * as actionCreators from '@/store/actions';
 import { useSelector, useDispatch } from 'react-redux';
@@ -90,6 +90,10 @@ export function Operator() {
   }, [result]);
 
   const run = (repos: string[], opera: string) => {
+    if(repos.length === 0){
+      message.warning('No repos are selected');
+      return;
+    }
     setResult([]);
     setStep(0);
     let newList = _repos.map((item: any) => {
@@ -97,7 +101,7 @@ export function Operator() {
       return item;
     });
     dispatch(actionCreators.getRepos(newList));
-    socket.emit('operator', { repos, opera }, (response: any) =>
+    socket.emit('operator', { repos, opera:`git ${opera}` }, (response: any) =>
       console.log('Operator:', response),
     );
   };
@@ -116,6 +120,7 @@ export function Operator() {
 
   return (
     <div>
+      git 
       <Search
         enterButton="运行"
         onSearch={value => run(list, value)}
