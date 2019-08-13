@@ -14,19 +14,19 @@ module.exports = withPlugins(
   ],
   {
     useFileSystemPublicRoutes: false,
-    // webpack: function (config, { buildId, dev }) {
+    webpack: function (config, { buildId, dev }) {
 
-    //   config.resolve = {
-    //     ...config.resolve,
-    //     ...{
-    //       alias: {
-    //         ...config.resolve.alias,
-    //         '@': path.resolve(__dirname, 'client'),
-    //       }
-    //     },
-    //   };
+      config.resolve = {
+        ...config.resolve,
+        ...{
+          alias: {
+            ...config.resolve.alias,
+            '@': path.resolve(__dirname, 'pages'),
+          }
+        },
+      };
 
-    //   return config
-    // }
+      return config
+    }
   },
 );

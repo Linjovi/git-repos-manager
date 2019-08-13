@@ -2,7 +2,7 @@ import React from 'react';
 import SelectContext from '@/components/selectContext';
 import io from 'socket.io-client';
 import * as path from 'path';
-import { Input, Modal, Button,message } from 'antd';
+import { Input, Modal, Button, message } from 'antd';
 import './Operator.css';
 import * as actionCreators from '@/store/actions';
 import { useSelector, useDispatch } from 'react-redux';
@@ -68,7 +68,11 @@ export function Operator() {
               actionCreators.getStatus({ name: current, status: 'success' }),
             );
             if (begin.test(data.data)) {
-              setCurrent(path.basename(data.data.split('✓')[1].split(':')[0]).replace("\n",""));
+              setCurrent(
+                path
+                  .basename(data.data.split('✓')[1].split(':')[0])
+                  .replace('\n', ''),
+              );
             } else {
               setCurrent('');
               setStep(0);
@@ -90,11 +94,11 @@ export function Operator() {
   }, [result]);
 
   const run = (repos: string[], opera: string) => {
-    if(repos.length === 0){
+    if (repos.length === 0) {
       message.warning('No repos are selected');
       return;
     }
-    if(!opera.includes('git')){
+    if (!opera.includes('git')) {
       message.warning('Only git command can be used');
       return;
     }

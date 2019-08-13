@@ -53,6 +53,9 @@ export function RepoList(props: any) {
     initFetch();
   }, [initFetch]);
 
+  // const clickRow = (record:any)=>{
+  //   console.log(record)
+  // }
   return (
     <div className="repoList">
       <Table
@@ -60,6 +63,11 @@ export function RepoList(props: any) {
         columns={columns}
         dataSource={repos}
         rowKey={(record: any) => record.name}
+        // onRow={(record)=>{
+        //   return{
+        //     onClick:clickRow.bind(this,record)
+        //   }
+        // }}
       />
     </div>
   );

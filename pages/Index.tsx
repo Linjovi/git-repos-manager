@@ -19,7 +19,7 @@ class Index extends React.Component<Props> {
   }
 
   public render() {
-    return (<Provider store={store}><App /></Provider>);
+    return (<Provider store={store}><App query={this.props.query} /></Provider>);
   }
 }
 
