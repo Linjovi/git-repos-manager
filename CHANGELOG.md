@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.5](https://github.com/Linjovi/git-repos-manager/compare/v1.2.0...v1.2.5) (2019-08-15)
+
+
+### Bug Fixes
+
+* fix status judgement problem ([e7227a2](https://github.com/Linjovi/git-repos-manager/commit/e7227a2))
+* socket close ([8a272f5](https://github.com/Linjovi/git-repos-manager/commit/8a272f5))
+
 ## 1.2.0 (2019-08-06)
 
 
