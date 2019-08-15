@@ -9,6 +9,10 @@ export function _repos(state = initialReposState, action: any) {
       let index = state.findIndex(
         (item: any) => item.name === action.repo.name,
       );
+      console.log("index======",index)
+      if(!state[index]){
+        return;
+      }
       let [...newState] = state;
       newState[index].status = action.repo.status;
       // console.log("new",newState[0].status)

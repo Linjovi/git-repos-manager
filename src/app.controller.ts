@@ -1,4 +1,4 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Controller, Get, Render, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -7,7 +7,7 @@ export class AppController {
 
   @Get()
   @Render('Index')
-  public root(): string {
-    return this.appService.root();
+  public root(@Query() query:any): string {
+    return this.appService.root(query);
   }
 }

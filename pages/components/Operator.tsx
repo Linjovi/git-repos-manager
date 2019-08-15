@@ -9,7 +9,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ShellLog } from './ShellLog';
 
 const { Search } = Input;
-const socket = io('http://localhost:4000');
+var socket:any;
+// const socket = io('http://localhost:4000');
 
 export function Operator() {
   const list = React.useContext(SelectContext);
@@ -20,6 +21,7 @@ export function Operator() {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
+    socket = io('http://localhost:4000');
     socket.on('connect', function() {
       console.log('connected');
     });
@@ -35,7 +37,10 @@ export function Operator() {
     socket.on('disconnect', function() {
       console.log('Disconnected');
     });
-  }, []);
+    return () => {
+      socket.close();
+    };
+  });
 
   React.useEffect(() => {
     let data = result[result.length - 1];

@@ -7,31 +7,32 @@ import { SelectProvider } from '@/components/selectContext';
 import { Operator } from '@/components/Operator';
 import { SelectList } from '@/components/selectList';
 const App = (props:any) => {
-  const [git, setGit] = React.useState({
-    user: {
-      name: '',
-      email: '',
-    },
-  });
-  const [path, setPath] = React.useState('');
+  // const [git, setGit] = React.useState({
+  //   user: {
+  //     name: '',
+  //     email: '',
+  //   },
+  // });
+  const [path, setPath] = React.useState(props.root||"");
   const [selected, setSelected] = React.useState([]);
-  React.useEffect(() => {
-    Repo.getGitInfo().then((res: any) => {
-      setGit(res.data);
-    });
-  }, []);
+  // React.useEffect(() => {
+  //   Repo.getGitInfo().then((res: any) => {
+  //     setGit(res.data);
+  //   });
+  // }, []);
   return (
     <div className="App">
       <SelectProvider value={selected}>
         <h3>全局git信息</h3>
+        <div>{props.root}</div>
         <p>
-          user:{git.user.name} email:{git.user.email}
+          user:{props.git.user.name} email:{props.git.user.email}
         </p>
         <div>
           <SearchInput callback={setPath} />
           <RepoList repoPath={path} callback={setSelected} />
         </div>
-          <SelectList />
+          {/* <SelectList /> */}
         <div />
         <Operator />
       </SelectProvider>
