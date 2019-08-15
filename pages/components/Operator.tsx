@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ShellLog } from './ShellLog';
 
 const { Search } = Input;
-var socket:any;
+var socket: any;
 // const socket = io('http://localhost:4000');
 
 export function Operator() {
@@ -40,7 +40,7 @@ export function Operator() {
     return () => {
       socket.close();
     };
-  });
+  }, []);
 
   React.useEffect(() => {
     let data = result[result.length - 1];
@@ -48,6 +48,8 @@ export function Operator() {
       return;
     }
     // data.data = data.data.replace(/\n/g, '');
+    console.log(step);
+    console.log(data.data);
     const begin = /^\/(.*):$/;
     const end = /^\/(.*)\s✓/;
     if (data.type === 'error') {
@@ -72,12 +74,10 @@ export function Operator() {
             dispatch(
               actionCreators.getStatus({ name: current, status: 'success' }),
             );
-            if (begin.test(data.data)) {
-              setCurrent(
-                path
-                  .basename(data.data.split('✓')[1].split(':')[0])
-                  .replace('\n', ''),
-              );
+            const tmpList = data.data.replace(/\n/g, '').split('✓');
+            const next = tmpList[tmpList.length - 1];
+            if (begin.test(next)) {
+              setCurrent(path.basename(next.split(':')[0]));
             } else {
               setCurrent('');
               setStep(0);
