@@ -1,7 +1,7 @@
 import React from 'react';
 import SelectContext from '@/components/selectContext';
 import io from 'socket.io-client';
-import * as path from 'path';
+// import * as path from 'path';
 import { Input, Modal, Button, message } from 'antd';
 import './Operator.css';
 import * as actionCreators from '@/store/actions';
@@ -48,52 +48,20 @@ export function Operator() {
       return;
     }
     // data.data = data.data.replace(/\n/g, '');
-    console.log(step);
-    console.log(data.data);
-    const begin = /^\/(.*):$/;
+    // console.log(step);
+    // console.log(data.data);
+    // const begin = /^\/(.*):$/;
     const end = /^\/(.*)\s✓/;
     if (data.type === 'error') {
       return;
     } else {
-      switch (step) {
-        case 0:
-          setCurrent(path.basename(data.data.split(':')[0]));
-          setStep(1);
-          return;
-        case 1:
-          if (data.type === 'close') {
-            dispatch(
-              actionCreators.getStatus({ name: current, status: 'fail' }),
-            );
-            setCurrent('');
-            setStep(0);
-            return;
-          }
-          if (end.test(data.data)) {
-            //success
-            dispatch(
-              actionCreators.getStatus({ name: current, status: 'success' }),
-            );
-            const tmpList = data.data.replace(/\n/g, '').split('✓');
-            const next = tmpList[tmpList.length - 1];
-            if (begin.test(next)) {
-              setCurrent(path.basename(next.split(':')[0]));
-            } else {
-              setCurrent('');
-              setStep(0);
-            }
-          } else {
-            //info or error
-            if (begin.test(data.data)) {
-              dispatch(
-                actionCreators.getStatus({ name: current, status: 'fail' }),
-              );
-              setCurrent(path.basename(data.data.split(':')[0]));
-            }
-          }
-          return;
-        default:
-          return;
+      if (end.test(data.data)) {
+        //success
+        const currentPath = data.data.split('✓')[0].split(/\//g);
+        const current = currentPath[currentPath.length-1].replace(' ', '');
+        dispatch(
+          actionCreators.getStatus({ name: current, status: 'success' }),
+        );
       }
     }
   }, [result]);
